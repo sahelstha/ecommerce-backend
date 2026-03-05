@@ -68,4 +68,33 @@ public class ProductServiceImpl implements ProductService {
         return productResponse;
 
     }
+
+    @Override
+    public ProductResponse searchProductByKeyword(String keyword) {
+        List<Product> products = productRepository.findByProductNameLikeIgnoreCase('%' + keyword + '%');
+
+        List<ProductDTO> productDTOS = products.stream()
+                .map(product -> modelMapper.map(product, ProductDTO.class))
+                .toList();
+
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setContent(productDTOS);
+        return productResponse;    }
+
+    @Override
+    public ProductDTO updateProduct(Long productId, Product product) {
+        Product productFromDb = productRepository.findById(productId)
+                .orElseThrow(()-> new ResourceNotFoundException("Product", "productId", productId));
+
+        productFromDb.setProductName(product.getProductName());
+        productFromDb.setDescription(product.getDescription());
+        productFromDb.setQuantity(product.getQuantity());
+        productFromDb.setPrice(product.getPrice());
+        productFromDb.setDiscount(product.getDiscount());
+        productFromDb.setSpecialPrice(product.getSpecialPrice());
+
+        Product savedProduct = productRepository.save(productFromDb);
+
+        return modelMapper.map(savedProduct, ProductDTO.class);
+    }
 }
