@@ -3,6 +3,7 @@ package com.ecommerce.project.controller;
 import com.ecommerce.project.payload.ProductDTO;
 import com.ecommerce.project.payload.ProductResponse;
 import com.ecommerce.project.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -19,7 +19,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/admin/categories/{categoryId}/product")
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDto,
+    public ResponseEntity<ProductDTO> addProduct(@Valid  @RequestBody ProductDTO productDto,
                                                  @PathVariable Long categoryId) {
         ProductDTO savedProductDTO = productService.addProduct(categoryId, productDto);
         return new ResponseEntity<>(savedProductDTO, HttpStatus.CREATED);
@@ -44,7 +44,7 @@ public class ProductController {
     }
 
     @PutMapping("/admin/products/{productId}")
-    public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO productDto,
+    public ResponseEntity<ProductDTO> updateProduct(@Valid @RequestBody ProductDTO productDto,
                                                     @PathVariable Long productId) {
         ProductDTO updatedProductDto = productService.updateProduct(productId, productDto);
         return new ResponseEntity<>(updatedProductDto, HttpStatus.CREATED);
