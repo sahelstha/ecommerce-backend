@@ -14,6 +14,7 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users",
         uniqueConstraints = {
         @UniqueConstraint(columnNames = "username"),
@@ -41,8 +42,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    public User(Long userId, String username, String email, String password) {
-        this.userId = userId;
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
