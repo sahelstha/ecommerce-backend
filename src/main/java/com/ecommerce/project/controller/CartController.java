@@ -1,14 +1,14 @@
 package com.ecommerce.project.controller;
 
+import com.ecommerce.project.model.Cart;
 import com.ecommerce.project.payload.CartDTO;
 import com.ecommerce.project.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -23,4 +23,11 @@ public class CartController {
         CartDTO cartDTO = cartService.addProductToCart(productId, quantity);
         return new ResponseEntity<>(cartDTO, HttpStatus.CREATED);
     }
+
+    @GetMapping("/carts")
+    public ResponseEntity<List<CartDTO>> getCarts() {
+        List<CartDTO> cartDTOS = cartService.getAllCarts();
+        return new ResponseEntity<>(cartDTOS, HttpStatus.FOUND);
+    }
+
 }
