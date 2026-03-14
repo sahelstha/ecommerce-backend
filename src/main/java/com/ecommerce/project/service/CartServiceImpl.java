@@ -159,11 +159,22 @@ public class CartServiceImpl implements CartService {
             throw new APIException("Product "+ product.getProductName()+" does not available in the cart");
         }
 
-        cartItem.setProductPrice(product.getSpecialPrice());
-        cartItem.setQuantity(cartItem.getQuantity() + quantity);
-        cartItem.setDiscount(product.getDiscount());
-        cart.setTotalPrice(cart.getTotalPrice() + (cartItem.getProductPrice() * quantity));
-        cartRepository.save(cart);
+        int newQuantity = cartItem.getQuantity() + quantity;
+
+        if(newQuantity < 0){
+            throw new APIException("The resulting quantity cannot be less or equal to than 0");
+        }
+
+        if(newQuantity == 0){
+            deleteProductFromCart(cartId, productId);
+        } else {
+            cartItem.setProductPrice(product.getSpecialPrice());
+            cartItem.setQuantity(cartItem.getQuantity() + quantity);
+            cartItem.setDiscount(product.getDiscount());
+            cart.setTotalPrice(cart.getTotalPrice() + (cartItem.getProductPrice() * quantity));
+            cartRepository.save(cart);
+        }
+
         CartItem updatedCartItem = cartItemRepository.save(cartItem);
 
         if(updatedCartItem.getQuantity() == 0) {
@@ -174,7 +185,7 @@ public class CartServiceImpl implements CartService {
         List<CartItem> cartItems = cart.getCartItems();
 
         Stream <ProductDTO> productDTOStream = cartItems.stream().map(p -> {
-            ProductDTO productDTO = modelMapper.map(p, ProductDTO.class);
+            ProductDTO productDTO = modelMapper.map(p.getProduct(), ProductDTO.class);
             productDTO.setQuantity(p.getQuantity());
             return productDTO;
         });
@@ -184,6 +195,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public String deleteProductFromCart(Long cartId, Long productId) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(()-> new ResourceNotFoundException("Cart", "id", cartId));
@@ -194,7 +206,7 @@ public class CartServiceImpl implements CartService {
         }
 
         cart.setTotalPrice(cart.getTotalPrice() - (cartItem.getProductPrice() * cartItem.getQuantity()));
-        cartRepository.deleteCartItemByProductIdAndCartId(cartId, productId);
+        cartItemRepository.deleteCartItemByProductIdAndCartId(cartId, productId);
 
         return "Product " + cartItem.getProduct().getProductName() + " has been deleted from the cart";
     }
