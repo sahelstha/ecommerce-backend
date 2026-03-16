@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 public class AddressServiceImpl implements AddressService {
     @Autowired
@@ -44,5 +45,14 @@ public class AddressServiceImpl implements AddressService {
         Address savedAddress = addressRepository.save(address);
 
         return modelMapper.map(savedAddress, AddressDTO.class);
+    }
+
+    @Override
+    public List<AddressDTO> retrieveAddresses() {
+        List<Address> addresses = addressRepository.findAll();
+
+        return addresses.stream().map(address ->
+            modelMapper.map(address, AddressDTO.class)
+        ).toList();
     }
 }
