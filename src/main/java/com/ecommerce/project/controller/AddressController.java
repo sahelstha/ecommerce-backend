@@ -1,6 +1,8 @@
 package com.ecommerce.project.controller;
 
+import com.ecommerce.project.model.User;
 import com.ecommerce.project.payload.AddressDTO;
+import com.ecommerce.project.util.AuthUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,8 @@ import java.util.List;
 public class AddressController {
     @Autowired
     private AddressService addressService;
+    @Autowired
+    private AuthUtil authUtil;
 
     @PostMapping("/addresses")
     public ResponseEntity<AddressDTO> createAddress(@Valid @RequestBody AddressDTO addressDto) {
@@ -31,5 +35,12 @@ public class AddressController {
     public ResponseEntity<AddressDTO> getAddressById(@PathVariable Long id) {
         AddressDTO addressDTO = addressService.retrieveAddressesById(id);
         return new ResponseEntity<>(addressDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/addresses")
+    public ResponseEntity<List<AddressDTO>> getAddressesOfUser() {
+        User user = authUtil.loggedInUser();
+        List<AddressDTO> addressDTOS = addressService.retrieveAddressesOfUser(user);
+        return new ResponseEntity<>(addressDTOS, HttpStatus.OK);
     }
 }
