@@ -55,4 +55,12 @@ public class AddressServiceImpl implements AddressService {
             modelMapper.map(address, AddressDTO.class)
         ).toList();
     }
+
+    @Override
+    public AddressDTO retrieveAddressesById(Long id) {
+        Address address = addressRepository.findById(id)
+                .orElseThrow(()-> new APIException("Address not found"));
+
+        return modelMapper.map(address, AddressDTO.class);
+    }
 }
