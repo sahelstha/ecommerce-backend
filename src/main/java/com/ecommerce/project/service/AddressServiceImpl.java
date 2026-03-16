@@ -97,7 +97,9 @@ public class AddressServiceImpl implements AddressService {
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(()-> new ResourceNotFoundException("Address", "addressId", addressId));
 
+        AddressDTO addressDTO = modelMapper.map(address, AddressDTO.class);
+
         addressRepository.delete(address);
-        return modelMapper.map(address, AddressDTO.class);
+        return addressDTO;
     }
 }
