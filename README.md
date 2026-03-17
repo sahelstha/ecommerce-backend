@@ -11,7 +11,7 @@ A comprehensive, production-ready REST API backend for ecommerce applications bu
 - [Project Structure](#-project-structure)
 - [Installation & Setup](#-installation--setup)
 - [API Endpoints](#-api-endpoints)
-- [Configuration](#️-configuration)
+- [Configuration](#-configuration)
 - [Database Schema](#-database-schema)
 - [Authentication](#-authentication)
 - [Contributing](#-contributing)
