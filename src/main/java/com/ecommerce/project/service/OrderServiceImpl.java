@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.MonthDay;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,10 +93,9 @@ public class OrderServiceImpl implements OrderService {
 
         // Send back the order summary
         OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
-        orderItems.forEach(item ->
-                orderDTO.getOrderItems().add(
-                        modelMapper.map(item, OrderItemDTO.class)
-                ));
+        List<OrderItemDTO> orderItemDTOs = orderItems.stream().map(orderItem -> modelMapper.map(orderItem, OrderItemDTO.class)).toList();
+        orderDTO.setOrderItems(orderItemDTOs);
+
         orderDTO.setAddressId(addressId);
 
         return orderDTO;
