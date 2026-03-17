@@ -1,6 +1,5 @@
 package com.ecommerce.project.service;
 
-import com.ecommerce.project.controller.AddressService;
 import com.ecommerce.project.exceptions.APIException;
 import com.ecommerce.project.exceptions.ResourceNotFoundException;
 import com.ecommerce.project.model.Address;

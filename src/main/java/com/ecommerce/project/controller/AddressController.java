@@ -2,6 +2,7 @@ package com.ecommerce.project.controller;
 
 import com.ecommerce.project.model.User;
 import com.ecommerce.project.payload.AddressDTO;
+import com.ecommerce.project.service.AddressService;
 import com.ecommerce.project.util.AuthUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
