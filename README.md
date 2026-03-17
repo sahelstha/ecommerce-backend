@@ -6,16 +6,16 @@ A comprehensive, production-ready REST API backend for ecommerce applications bu
 
 ## 📋 Table of Contents
 
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Installation & Setup](#installation--setup)
-- [API Endpoints](#api-endpoints)
-- [Configuration](#configuration)
-- [Database Schema](#database-schema)
-- [Authentication](#authentication)
-- [Contributing](#contributing)
-- [License](#license)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Installation & Setup](#-installation--setup)
+- [API Endpoints](#-api-endpoints)
+- [Configuration](#️-configuration)
+- [Database Schema](#-database-schema)
+- [Authentication](#-authentication)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
