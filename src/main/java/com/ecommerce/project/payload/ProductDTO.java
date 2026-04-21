@@ -18,7 +18,4 @@ public class ProductDTO {
     private Double specialPrice;
     private Double discount;
 
-    public Object toL() {
-        return null;
-    }
 }
