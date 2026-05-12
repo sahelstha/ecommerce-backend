@@ -20,10 +20,15 @@ public class UserInfoResponse {
 
     @Getter
     @Setter
+    public String email;
+
+    @Getter
+    @Setter
     public List<String> roles;
 
-    public UserInfoResponse(Long id, String username, String jwtToken, List<String> roles) {
+    public UserInfoResponse(Long id, String username,List<String> roles, String email, String jwtToken) {
         this.id = id;
+        this.email = email;
         this.jwtToken = jwtToken;
         this.username = username;
         this.roles = roles;
