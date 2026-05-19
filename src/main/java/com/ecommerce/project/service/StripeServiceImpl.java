@@ -75,6 +75,9 @@ public class StripeServiceImpl implements StripeService {
                         .build();
 
         PaymentIntent paymentIntent = PaymentIntent.create(params);
+
+        System.out.println("paymentIntent: " + paymentIntent);
+
         return paymentIntent;
     }
 }
