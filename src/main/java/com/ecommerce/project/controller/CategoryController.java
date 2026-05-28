@@ -16,7 +16,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/public/categories")
+    @GetMapping("/admin/categories")
     public ResponseEntity<CategoryResponse> getAllCategories(
             @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
@@ -26,8 +26,10 @@ public class CategoryController {
         return new ResponseEntity<>(categoryResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/public/categories")
+    @PostMapping("/admin/categories")
     public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDto) {
+        System.out.println("createCategory: " + categoryDto.toString());
+
         CategoryDTO savedCategoryDto = categoryService.createCategory(categoryDto);
         return new ResponseEntity<>(savedCategoryDto, HttpStatus.CREATED);
     }

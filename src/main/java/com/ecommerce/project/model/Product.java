@@ -46,4 +46,6 @@ public class Product {
             cascade = {CascadeType.PERSIST, CascadeType.MERGE},
             fetch = FetchType.EAGER)
     private List<CartItem> products = new ArrayList<>();
+
+//    private Boolean active = true;
 }

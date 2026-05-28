@@ -22,6 +22,9 @@ public class ProductController {
     @PostMapping("/admin/categories/{categoryId}/product")
     public ResponseEntity<ProductDTO> addProduct(@Valid  @RequestBody ProductDTO productDto,
                                                  @PathVariable Long categoryId) {
+        System.out.println("category123: "+categoryId);
+        System.out.println("product123: "+productDto);
+
         ProductDTO savedProductDTO = productService.addProduct(categoryId, productDto);
         return new ResponseEntity<>(savedProductDTO, HttpStatus.CREATED);
     }
@@ -72,11 +75,12 @@ public class ProductController {
 
     @DeleteMapping("/admin/products/{productId}")
     public ResponseEntity<ProductDTO> deleteProduct(@PathVariable Long productId) {
+        System.out.println("Delete product with id: " + productId);
         ProductDTO deleteProductDto =  productService.deleteProduct(productId);
         return new ResponseEntity<>(deleteProductDto, HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/products/{productId}/image")
+    @PutMapping("/admin/products/{productId}/image")
     public ResponseEntity<ProductDTO> updateProductImage (@PathVariable Long productId,
                                                          @RequestParam("image") MultipartFile image) throws IOException {
         ProductDTO updatedProduct = productService.updateProductImage(productId, image);
