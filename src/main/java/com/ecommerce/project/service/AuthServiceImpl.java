@@ -4,6 +4,8 @@ import com.ecommerce.project.model.AppRole;
 import com.ecommerce.project.model.Role;
 import com.ecommerce.project.model.User;
 import com.ecommerce.project.payload.AuthenticationResult;
+import com.ecommerce.project.payload.UserDTO;
+import com.ecommerce.project.payload.UserResponse;
 import com.ecommerce.project.repositories.RoleRepository;
 import com.ecommerce.project.repositories.UserRepository;
 import com.ecommerce.project.security.jwt.JwtUtils;
@@ -13,7 +15,10 @@ import com.ecommerce.project.security.response.MessageResponse;
 import com.ecommerce.project.security.response.UserInfoResponse;
 import com.ecommerce.project.security.services.UserDetailsImpl;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +50,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    ModelMapper modelMapper;
 
     @Override
     public AuthenticationResult login(LoginRequest loginRequest) {
@@ -136,5 +144,20 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseCookie logoutUser() {
         return jwtUtils.getCleanJwtCookie();
+    }
+
+    @Override
+    public Object getAllSellers(Pageable pageable) {
+        Page<User> allUser = userRepository.findByRoleName(AppRole.ROLE_SELLER, pageable);
+        List<UserDTO> userDTOS = allUser.getContent().stream().map(p->modelMapper.map(p, UserDTO.class)).toList();
+
+        UserResponse response = new UserResponse();
+        response.setContent(userDTOS);
+        response.setPageNumber(allUser.getNumber());
+        response.setPageSize(allUser.getSize());
+        response.setTotalPages(allUser.getTotalPages());
+        response.setTotalElements(allUser.getTotalElements());
+        response.setLastPage(allUser.isLast());
+        return response;
     }
 }
