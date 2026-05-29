@@ -73,6 +73,8 @@ public class WebSecurityConfig {
                         auth.requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .requestMatchers("/h2-console/**").permitAll()
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN") //we dont use ROLE_ADMIN because spring security append ROLE_ in the beginning
+                                .requestMatchers("/api/seller/**").hasAnyRole("ADMIN","SELLER")
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/api/public/**").permitAll()
 //                                .requestMatchers("/api/admin/**").permitAll()
