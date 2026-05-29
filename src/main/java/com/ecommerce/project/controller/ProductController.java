@@ -22,8 +22,18 @@ public class ProductController {
     @PostMapping("/admin/categories/{categoryId}/product")
     public ResponseEntity<ProductDTO> addProduct(@Valid  @RequestBody ProductDTO productDto,
                                                  @PathVariable Long categoryId) {
-        System.out.println("category123: "+categoryId);
-        System.out.println("product123: "+productDto);
+//        System.out.println("category123: "+categoryId);
+//        System.out.println("product123: "+productDto);
+
+        ProductDTO savedProductDTO = productService.addProduct(categoryId, productDto);
+        return new ResponseEntity<>(savedProductDTO, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/seller/categories/{categoryId}/product")
+    public ResponseEntity<ProductDTO> addProductSeller(@Valid  @RequestBody ProductDTO productDto,
+                                                 @PathVariable Long categoryId) {
+//        System.out.println("category123: "+categoryId);
+//        System.out.println("product123: "+productDto);
 
         ProductDTO savedProductDTO = productService.addProduct(categoryId, productDto);
         return new ResponseEntity<>(savedProductDTO, HttpStatus.CREATED);
@@ -97,6 +107,41 @@ public class ProductController {
     ) {
         ProductResponse productResponse = productService.getAllProductsForAdmin(pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/seller/products")
+    public ResponseEntity<ProductResponse> getAllProductsForSeller(
+            @RequestParam(name = "pageNumber",defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(name = "pageSize" ,defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_PRODUCT_BY, required = false) String sortBy,
+            @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder
+    ) {
+        System.out.println("getAllProductsForSeller");
+        ProductResponse productResponse = productService.getAllProductsForSeller(pageNumber, pageSize, sortBy, sortOrder);
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("/seller/products/{productId}")
+    public ResponseEntity<ProductDTO> updateProductSeller(@Valid @RequestBody ProductDTO productDto,
+                                                    @PathVariable Long productId) {
+        ProductDTO updatedProductDto = productService.updateProduct(productId, productDto);
+        return new ResponseEntity<>(updatedProductDto, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/seller/products/{productId}")
+    public ResponseEntity<ProductDTO> deleteProductSeller(@PathVariable Long productId) {
+        System.out.println("Delete product with id: " + productId);
+        ProductDTO deleteProductDto =  productService.deleteProduct(productId);
+        return new ResponseEntity<>(deleteProductDto, HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/seller/products/{productId}/image")
+    public ResponseEntity<ProductDTO> updateProductImageSeller(@PathVariable Long productId,
+                                                          @RequestParam("image") MultipartFile image) throws IOException {
+
+        ProductDTO updatedProduct = productService.updateProductImage(productId, image);
+
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
 
 }
